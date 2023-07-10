@@ -1037,6 +1037,8 @@
   例子：
 
   ![image-20220112010331334](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220112010331334.png)
+  ul li 的权重为0,0,0,1+0,0,0,1=0,0,0,2
+  .nav li的权重为0,0,1,0+0,0,0,1 = 0,0,1,1
 
 ### 2-7  css盒子模型
 

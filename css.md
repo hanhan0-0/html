@@ -2053,3 +2053,1548 @@
      - 导出选中的图片 文件菜单->导出->存储为web设备所用格式->选择我们要的图片格式->存储      
 
        想要切成透明的就把背景图层关上。
+- padding不会撑开盒子的情况
+    - 1. 如果盒子本身没有指定width/weigth属性则此时padding不会撑开盒子大小。
+        1. 继承关系，子元素虽然继承父元素的宽度，但是只要本身不设置width/weigth属性padding就不会撑开盒子大小。
+    - 外边距
+
+        margin属性用于设置外边距，即控制盒子和盒子之间的距离。
+
+        ![](https://secure2.wostatic.cn/static/uXuf3VEtAwEF9eoSvBnU5X/image.png)
+
+        margin简写方式和padding是一样的。
+    - 外边距典型应用
+
+        外边距可以让块级盒子水平居中，但是必须满足两个条件：
+
+        1. 盒子必须制定了宽度（width)
+        2. 盒子左右的外边距都设置为auto
+
+```JavaScript
+.header {width:200px;margin:0 auto;}
+```
+
+        常见的写法有以下三种：
+
+        1. margin-left:auto; margin-right:auto;
+        2. margin:auto;
+        3. margin:0 auto;
+
+```HTML
+<style>
+    div {
+        width: 100px;
+        height: 100px;
+        border: 1px solid black;
+        margin: 100px auto;
+    }
+</style>
+```
+
+        注意：以上方法是让块级元素水平居中，行内元素或者行内块元素水平居中就给父元素添加text-align:center；即可。
+    - 外边距合并
+
+        使用margin定义块元素的垂直外边距时，可能会出现外边距的合并。
+
+        主要有两种情况：
+
+        1. 相邻块元素垂直外边距的合并
+
+            当上下相邻的两个块元素（兄弟关系）相遇时，如果上面的元素有下外边距margin-bottom，下面的元素有上外边距margin-top，则它们之间的垂直间距不是margin-bottom与margin-top之和，而是取二者中较大的一个。
+
+            解决方法：尽量只给一个盒子添加margin值。
+
+            ![](https://secure2.wostatic.cn/static/uQKeKz5ppWUXRfAqM8QwTi/image.png)
+        2. 嵌套块元素垂直外边距的塌陷
+
+            对于两个嵌套关系（父子关系）的块元素，父元素有上外边距的同时子元素也有上外边距，此时父元素会塌陷一个正值（子元素上外边距值-父元素上外边距值）。
+
+            ![](https://secure2.wostatic.cn/static/5KkujPXsRJUi6giqFGiQ5F/image.png)
+
+            解决方法：
+
+            1. 可以为父元素定义上边框
+            2. 可以为父元素定义上内边距
+            3. 可以为父元素添加overflow:hidden
+    - 清除内外边距
+
+        网页元素很多都带有默认的内外边距，而且不同的浏览器默认的也不一致。因此我们在布局前，首先要清除下网页元素的内外边距。
+
+```HTML
+<style>
+    * {
+        padding: 0; /*清除内边距*/
+        margin: 0; /*清除外边距*/
+    }
+</style>
+```
+
+        注意：行内元素为了照顾兼容性，尽量只设置左右内外边距，但是转换为块级和行内块元素就可以了。
+
+        #### box-sizing 属性可以被用来调整这些表现：
+
+        - `content-box` 是默认值。如果你设置一个元素的宽为 100px，那么这个元素的内容区会有 100px 宽，并且任何边框和内边距的宽度都会被增加到最后绘制出来的元素宽度中。
+        - `border-box` 告诉浏览器：你想要设置的边框和内边距的值是包含在 width 内的。也就是说，如果你将一个元素的 width 设为 100px，那么这 100px 会包含它的 border 和 padding，内容区的实际宽度是 width 减去 (border + padding) 的值。大多数情况下，这使得我们更容易地设定一个元素的宽高。`border-box`不包含`margin`。
+
+    ### 2-8 ps基本操作
+
+    因为网页美工大部分效果图都是利用ps来做的，所以以后我们大部分切图工作都是在ps里面完成
+
+    ![](https://secure2.wostatic.cn/static/gyG9WTPogXpQ29s2LT4LhS/image.png)
+
+    ![](https://secure2.wostatic.cn/static/8LicFaShfyYGWAsiGAoF3D/image.png)
+
+    一个综合案例：
+
+```HTML
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>产品案例</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        .box {
+            width: 300px;
+            height: 415px;
+            background-color: #fff;
+            margin: 100px auto;
+        }
+        
+        .box img {
+            width: 100%;
+            height: 70%;
+        }
+        
+        .box .reviw {
+            font-size: 13px;
+            height: 30px;
+            padding: 0px 20px;
+            margin-top: 10px;
+            text-indent: 2em;
+        }
+        
+        .box .aapraise {
+            font-size: 10px;
+            color: #b0b0b0;
+            margin-top: 20px;
+            padding: 0px 20px;
+        }
+        
+        .box .info {
+            font-size: 13px;
+            margin-top: 15px;
+            padding: 0px 20px;
+        }
+        
+        h4 {
+            display: inline-block;
+            font-weight: normal;
+        }
+        
+        span {
+            color: #ff6700;
+        }
+        
+        em {
+            font-style: normal;
+            color: #b0b0b0;
+            margin: 0px 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <img src="../image/2.jpg" alt="无法显示" title="姐姐和宝贝">
+        <p class="reviw">
+            2021年6月5日我们面基啦，超可爱的宝贝啦。
+        </p>
+        <div class="aapraise">吃自助、玩密室</div>
+        <div class="info">
+            <h4>lalalalalala</h4>
+            <em>|</em>
+            <span>快乐</span>
+        </div>
+
+
+    </div>
+</body>
+
+</html>
+```
+
+    - 怎么去掉li前面的项目符号
+
+        语法：
+
+```JavaScript
+list-style:none;
+```
+
+        快报综合案例：
+
+```HTML
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>快报</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        .box {
+            width: 248px;
+            height: 163px;
+            border: 1px solid #ccc;
+            margin: 100px auto;
+        }
+        
+        .box h3 {
+            height: 32px;
+            border-bottom: 1px dotted #ccc;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 33px;
+            padding-left: 15px;
+        }
+        
+        .box ul li a {
+            color: #666;
+            font-size: 12px;
+            text-decoration: none;
+        }
+        
+        ul {
+            padding-top: 7px;
+        }
+        
+        li {
+            list-style: none;
+            padding-left: 21px;
+            height: 23px;
+            line-height: 23px;
+        }
+        
+        .box ul li a:hover {
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h3>品优购</h3>
+        <ul>
+            <li><a href="#">[特惠]爆款耳机五折秒！</a></li>
+            <li><a href="#">[特惠]母亲节，健康好礼低至五折！</a></li>
+            <li><a href="#">[特惠]爆款耳机五折秒！</a></li>
+            <li><a href="#">[特惠]9.9元洗100张照片!</a></li>
+            <li><a href="#">[特惠]禅泓智能空调立省1000</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>
+```
+    - 圆角边框
+
+        I9及i9以上使用。
+
+        在css3中，新增了圆角边框样式，这样我们的盒子就可以变成圆角的了。
+
+        border-radius属性用于设置元素的外边框圆角。
+
+        语法：
+
+```HTML
+border-radius:length;
+```
+
+        radius半径（圆的半径）原理：（椭）圆与边框的交际形成圆角效果。
+
+```HTML
+div {
+            border-radius: 20px;
+        }
+```
+
+        1. 参数值可以为数值或者百分比的形式
+        2. 如果是正方形，想要设置为一个圆，把数值修改为高度或宽度的一般即可，或者直接写为50%
+        3. 如果是一个矩形，设置为高度的一半就可以达成，上下边是直径，左右是半圆。
+        4. 该属性是一个简写属性，可以跟四个值，分别代表左上角、右上角、右下角、左下角。两个值是第一个是左上和右下对角线，第二个值是右上和左下对角线。
+        5. 分开写：border-top-left-radius               border-top-right-radius  
+
+            border-bottom-left-radius       border-bottom-right-radius
+
+```HTML
+<style>
+        .yuanxing {
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+            /* 要做一个圆形，则先做一个正方形，再让半径为正方形边长的一半*/
+            /*这里50%等同于100px */
+            border-radius: 50%;
+        }
+        
+        .yuanjiaojuxing {
+            width: 400px;
+            height: 200px;
+            background-color: pink;
+            /* 要做一个上下是矩形，两侧是圆形，则先做一个长方形*/
+            /*再让半径高度的一半*/
+            border-radius: 100px;
+        }
+    </style>
+```
+    - 盒子阴影
+
+        css3中增加了盒子影子，我们可以使用box-shadow属性为盒子添加阴影。
+
+        语法：
+
+```HTML
+box-shadow:h-shadow v-shadow blur spread color inset;
+
+```
+
+        ![](https://secure2.wostatic.cn/static/e3mUeP8ksWanAhSzXuBFrf/image.png)
+
+        注意：
+
+        1. 默认的最外阴影（outset），但是不可以写这个单词，否则导致阴影无效。
+        2. 盒子阴影不占用空间，不会影响其他盒子排列。
+
+```HTML
+div:hover {
+            box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, 0.3);
+        }
+```
+    - 文字阴影
+
+        在css3中，我们可以使用text-shadow属性将阴影应用于文本。
+
+        语法：
+
+```JavaScript
+text-shadow: h-shadow v-shadow blur color;
+
+```
+
+        ![](https://secure2.wostatic.cn/static/6mRug1tPn4EC939DZVzQRi/image.png)
+
+    ### 2-9 浮动
+
+    - 传统网页布局的三种方式
+
+        （pc端）CSS提供了三种传统布局的方式（简单来说就是盒子如何进行排列顺序）：
+
+        1. 普通流（标注流）
+
+            就是标签按照默认规定好的方式排列。
+
+            - 块级元素会独占一行，从上向下顺序排列
+
+                #### 常用元素：div hr(`<hr>` 标签在 HTML 页面中创建一条水平线。) p h1-h6 ul ol dl form table
+            - 行内元素会按照顺序，从左到右顺序排列，碰到父元素边缘会自动换行。
+
+                #### 常用元素：span a i em
+
+            标准流就是最基本的布局方式。
+        2. 浮动
+        3. 定位
+
+        这三种布局方式都是用来摆放盒子的，盒子摆放到合适位置，布局自然就完成了。
+
+        注意：实际开发中，一个页面基本都包含了这三种布局方式（后面移动端学习新的布局方式）
+    - 为什么需要浮动
+
+        有很多的布局效果，标准流没有办法完成，此时就可以利用浮动完成布局。因为浮动可以改变元素标签默认的排列方式。
+
+        浮动最典型的应用：可以让多个块级元素一行内排列显示。
+
+        网页布局第一准则：多个块级元素纵向排列找标准流，多个块级元素横向排列找浮动。
+
+        网页布局第二准则：先设置盒子大小，之后设置盒子位置。
+    - 什么是浮动
+
+        float属性用于创建浮动框，将其移动到一边，直到左边缘或者右边缘触及包含块或者另一个夫浮动框的边缘。
+
+        语法：
+
+```JavaScript
+选择器 {float:属性值}
+```
+
+        ![](https://secure2.wostatic.cn/static/3csfkyn784NRsMwVqxUzmk/image.png)
+
+```HTML
+<style>
+    .one {
+        height: 100px;
+        width: 100px;
+        background-color: pink;
+        float: left;
+    }
+    
+    .two {
+        height: 100px;
+        width: 100px;
+        background-color: pink;
+        float: right;
+    }
+</style>
+
+```
+    - 浮动特性
+        1. 浮动元素会脱离标准流（脱标）
+            - 脱离标准普通流的控制（飘到我们面前）（浮）移动到指定位置（动）俗称脱标
+            - 浮动的盒子不再保留原先的位置。
+
+                ![](https://secure2.wostatic.cn/static/9v13czqBRsq3HvabRvvTGP/image.png)
+
+```HTML
+<style>
+    .one {
+        height: 100px;
+        width: 100px;
+        background-color: pink;
+        float: left;
+    }
+    
+    .two {
+        height: 200px;
+        width: 200px;
+        background-color: blue;
+    }
+</style>
+```
+
+                结果：
+
+                ![](https://secure2.wostatic.cn/static/3QojrYq5s6BUFdsi1zrJDj/image.png)
+        2. 浮动的元素会一行内显示并且元素顶部对齐
+
+            注意：浮动的元素是互相贴靠在一起的（不会有间隙），如果父级宽度装不下这些浮动的盒子，多出的盒子会另起一行对齐。
+
+```HTML
+<style>
+    div {
+        height: 100px;
+        width: 100px;
+        float: left;
+    }
+    
+    .one {
+        background-color: pink;
+    }
+    
+    .two {
+        height: 300px;
+        background-color: blue;
+    }
+    
+    .three {
+        color: white;
+        background-color: black;
+    }
+    
+    .four {
+        height: 200px;
+        background-color: red;
+    }
+</style>
+```
+
+            结果：
+
+            ![](https://secure2.wostatic.cn/static/2VPZNh4nik2pgXNPo214AN/image.png)
+        3. 浮动的元素会具有行内块元素的特性
+
+            任何元素都可以浮动，不管原先是什么模式的元素，添加浮动之后具有行内块元素相似的特性。
+
+            - 如果块级盒子没有设置宽度，默认宽度和父级一样宽，但是添加浮动后，他的大小根据内容来决定。
+            - 浮动的盒子中间是没有缝隙的是紧挨在一起的。
+            - 行内元素同理。
+    - 浮动元素经常和标准流父亲搭配使用
+
+        为了约束浮动元素位置，我们网页布局一般采用的策略是：
+
+        #### 先用标准流的父元素排列上下位置，之后内部子元素采取浮动排列左右位置，符合网页布局第一准则。
+
+        练习：
+
+```HTML
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=div, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .box {
+            height: 300px;
+            width: 600px;
+            background-color: pink;
+        }
+        
+        .one {
+            width: 200px;
+            float: left;
+            height: 100%;
+            background-color: rgba(255, 0, 0, 1);
+        }
+        
+        .two {
+            float: left;
+            width: 400px;
+            height: 100%;
+            background-color: blue;
+        }
+        
+        .two div {
+            float: left;
+            width: 90px;
+            height: 140px;
+            margin-left: 10px;
+            background-color: antiquewhite;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="one"></div>
+        <div class="two">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+```
+    - 浮动布局注意点
+        1. 浮动和标准流的父盒子搭配
+
+            先用标准流的父元素排列上下位置，之后内部子元素采取浮动排列左右位置。
+        2. 一个元素浮动了，理论上其余的兄弟元素也要浮动
+
+            一个盒子里面有多个盒子，如果其中一个盒子浮动了，那么其他兄弟也应该浮动，以防止引起问题。
+
+            浮动的盒子只会影响浮动盒子后面的标准流，不会影响前面的标准流
+
+```HTML
+<style>
+        div {
+            height: 100px;
+            width: 100px;
+        }
+        
+        .one {
+            float: left;
+            background-color: rgba(255, 0, 0, 0.3);
+        }
+        
+        .two {
+            height: 50px;
+            background-color: blue;
+        }
+        
+        .three {
+            float: left;
+            color: white;
+            background-color: black;
+        }
+    </style>
+```
+
+            结果：
+
+            ![](https://secure2.wostatic.cn/static/pS9TTwSZ6H2Ethhd6HV3iX/image.png?auth_key=1691120324-c7VvZvcEYWCNq1dTcMajVU-0-509a8f6a312d3b32d2867edfb3a0c422)
+
+    ### 2-10 清除浮动+PS切图
+
+    - 为什么清除浮动
+
+        标准流父盒子不必须有高度，因为盒子里内容如果很长，或者不确定时，固定的高度不够灵活。
+
+        所以父盒子很多情况下不方便给高度，但是盒子浮动又不占用位置，最后父级盒子高度为0时，就会影响下面的标准流盒子。
+
+        ![](https://secure2.wostatic.cn/static/rQebEWEgtnS8s3DeP4eE8U/image.png?auth_key=1691120323-oSERKongmdeTcrVDu6terB-0-ec8da337917c42ba87c5be67a61c84f4)
+
+        由于浮动元素不再占用原文档的位置，所以它会对后面的元素排版产生影响。所以要清除浮动。
+    - 清除浮动本质
+        1. 本质是清除浮动元素造成的影响
+        2. 如果父盒子本身有高度，则不需要清除浮动
+        3. 清除浮动之后，父级就会根据浮动的子盒子自动检测高度。父级有了高度，就不会影响下面的标准流了。
+
+        语法：
+
+```JavaScript
+选择器{clear:属性值;}
+
+```
+
+        ![](https://secure2.wostatic.cn/static/dWjtoXvTbTk3juad5Rwdkg/image.png?auth_key=1691120323-hi7gRwQj2EZSpQen1skuXr-0-63c56a45f6230ab2f722363e0a94222d)
+
+        实际开发中我们几乎只用clear:both;
+
+        清除浮动的策略是：闭合浮动。只让浮动在父盒子内部影响，不影响父盒子外面的其他盒子。
+
+        #### 清除浮动方法：
+
+        1. 额外标签法也称为隔墙法，是w3c推荐的做法。
+        2. 父级添加overflow属性
+        3. 父级添加after伪属性
+        4. 父级添加双伪属性
+    - 额外标签法
+
+        额外标签法会在浮动元素末尾添加一个空的标签。例如`<div style="clear:both"></div>`或者其他标签`<br />`等
+
+        - 优点：通俗易懂，书写方便
+        - 缺点：添加许多无意义的标签，结构化较差。
+
+        注意：我们新添加的空标签必须是块级元素。不能是行内元素。
+
+        应用：
+
+```HTML
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            background-color: pink;
+            width: 700px;
+        }
+        
+        .box .clear {
+            clear: both;
+        }
+        
+        .box .one {
+            float: left;
+            width: 200px;
+            height: 300px;
+            background-color: blue;
+        }
+        
+        .box .two {
+            float: left;
+            width: 300px;
+            margin-left: 30px;
+            height: 100px;
+            background-color: skyblue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <div class="one"></div>
+        <div class="two"></div>
+        <div class="clear"></div>
+    </div>
+    <div class="foot"></div>
+</body>
+
+</html>
+```
+    - 父级添加overflow
+
+        给父级添加overflow属性，将其属性值设置为hidden、auto或scroll
+
+```HTML
+.box {
+            background-color: pink;
+            width: 700px;
+            overflow: hidden;
+        }
+```
+
+        - 优点：代码简洁
+        - 缺点：无法显示溢出的部分
+    - after伪元素
+
+        是额外标签法的升级版，也是给父元素添加。
+
+```HTML
+<style>
+    .clearfix:after {
+        content: "";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+    
+    .clearfix {
+        /* IE6、7专有 */
+        *zoom: 1;
+    }
+    </style>
+<body>
+
+<div class="box clearfix">
+    <div class="one"></div>
+    <div class="two"></div>
+</div>
+<div class="foot"></div>
+</body>
+```
+
+        - 优点：没有增加标签、结构简单
+        - 缺点：照顾低版本浏览器
+        - 代表网站：百度、淘宝网、网易
+    - 双伪元素清除浮动
+
+        也是给父元素添加。
+
+```HTML
+<style>
+       .clear::before,
+       .clearfix:after {
+           content: "";
+           display: table;
+       }
+       
+       .clearfix:after {
+           clear: both;
+       }
+       
+       .clearfix {
+           /* IE6、7专有 */
+           *zoom: 1;
+       }
+</style>
+<div class="box clearfix">
+```
+
+        - 优点：代码更简洁
+        - 缺点：照顾低版本浏览器
+        - 代表网站：小米、腾讯等
+    - 常见的图片格式
+
+        ![](https://secure2.wostatic.cn/static/3cAHJUywjchpXuNdqx3Deh/image.png?auth_key=1691120297-shB6FadFBXkhw5BAw1iZQA-0-98c8d39d98d453b69e0ba8b9745e4520)
+    - PS切图
+
+        方式：图层切图、切片切图、ps插件切图
+
+        1. 图层切图
+            - 点击图片再点击图层右键快速导出为png
+            - 把两个图层合并为一个再导出方式：shift选中想要合并的图层，ctrl+e进行合并，再右键快速导出png
+        2. 切片切图
+            - 利用切片选中图片（利用切片工具手动划出）
+            - 导出选中的图片 文件菜单->导出->存储为web设备所用格式->选择我们要的图片格式->存储      
+
+                想要切成透明的就把背景图层关上。
+
+    ### 2-11 css四种定位
+
+    - 为什么需要定位
+        1. 浮动可以让多个块级盒子一行没有细缝排列显示，经常用于横向排列盒子
+        2. 定位则是可以让盒子自由的在某个盒子内移动或者固定屏幕中某个位置，并且可以压住其他盒子。
+    - 定位组成
+
+        定位：将盒子定在某一位置，
+
+        定位=定位模式+边偏移
+
+        - 定位模式
+
+            css的position属性来设置
+
+            ![](https://secure2.wostatic.cn/static/gBh5bNuTwwra76oGZJmRxQ/image.png?auth_key=1691120297-79xaeq1uiuAWqgamZmwL37-0-383d7aee75e56f16e7932c2b895cf821)
+
+            stiky 粘性定位
+        - 边偏移
+
+        ![](https://secure2.wostatic.cn/static/4q2AzMBqR79yobUyu3SN3Y/image.png?auth_key=1691120297-95evEwtdypVhh67HVf6Yue-0-b6c3e181dddf0aac0cb667361d6c2afb)
+    - 静态定位
+
+        元素默认的定位方式，无定位的意思
+
+        语法：选择器{ position:static;}没有边偏移，根据标准流特性摆放
+    - 相对定位
+
+        相对定位是元素在移动位置的时候是参照原来位置移动的，而且原来的位置是保留的，后面的盒子依然以标准流的方式来对待他。
+
+        `选择器{position:relative;}`
+    - 绝对定位
+
+        绝对定位是在移动位置的时候，是相对于它祖先元素来说的
+
+        `选择器{position:absolute;}`
+
+        - 特点：
+            1. 如果没有祖先元素或者祖先元素没有定位，就以浏览器为准对齐。
+
+                `left:0;top:0;左上角`
+
+                `right:0;bottom:0;右下角`
+            2. 如果父元素有定位（相对、绝对、固定定位），则以靠近一级的有定位的祖先元素为参考点移动位置。
+            3. 绝对定位不再占有原来的位置，飘得比浮动还高
+    - 子绝父相的由来
+
+        意思：子级使用绝对定位，父级则需要相对定位
+
+        1. 子级绝对定位，不会占有位置，可以放到父盒子内容任何一个位置，不会影响其他的兄弟盒子。
+        2. 父级需要加相对定位，需要占有位置，需要加定位限制子盒子在父盒子内显示。
+
+            所以相对定位经常用来作为绝对定位的父级。
+    - 固定定位
+
+        固定到浏览器可视区的某一个位置,浏览器页面滚动时元素的位置不会改变
+
+        `选择器{position:fixed;}`
+
+        - 以可视窗口的参照点进行移动。
+
+        注意：跟父元素没有关系；不随着滚动条的滚动而滚动。
+
+        - 不再保留位置，脱离标准流。
+    - 固定定位小技巧
+
+        固定定位的盒子可以和版心来对齐。
+
+        小算法：1、先让固定定位的盒子left:50%    2、让固定定位的盒子再走版心盒子的一半  margin-left:600px
+    - 黏性定位
+
+        sticky 可以理解为相对定位和固定定位的复合
+
+        `position：sticky;top:10px`
+
+        特点：
+
+        1. 以浏览器的可视窗口为参照点移动元素
+        2. 粘性定位占有原先的位置
+        3. 必须有left、top、right、bottom其中一个才有效
+    - 定位的叠放书顺序
+
+        在使用定位布局时，可能出现盒子重叠的情况。此时，可以使用z-index来控制盒子的前后次序
+
+        `选择器{z-index:1;}`
+
+        - 数值可以是正整数，负整数和0默认是auto，数值越大，越在上面
+        - 如果属性值相同，按照书写的顺序，后写的在上
+        - 数字后不能加单位
+        - 只有定位的盒子才会有这个属性
+    - 绝对定位的盒子居中算法
+
+        水平居中：
+
+        1. left走50% 走父盒子的一半
+        2. margin-left负值往左边走自己盒子宽度的一半
+
+        垂直居中:
+
+        1. top走50%走盒子的一半
+        2. margin-top负值往上边走自己盒子宽度的一半
+    - 定位的特殊性
+
+        绝对定位和固定定位和浮动类似：
+
+        1. 不需要转换直接可以加宽度和高度。
+        2. 块级元素不给宽高时。默认宽度高度为内容大小
+        3. 浮动元素、固定定位（绝对定位）脱标的盒子不会触发外边距合并的问题
+    - 绝对定位（固定定位）会完全压住盒子
+
+        浮动元素不同，只会压住它下面标准流的盒子，但是不会压住标准流盒子里面的文字（图片） 
+
+        ![](https://secure2.wostatic.cn/static/4Yf6nLZYUivNiSYNBVFnf4/image.png?auth_key=1691120297-gg7KwHfCTXmAcHEzJmn1ug-0-a6e5a0cbcdbbbb8bd14d693e1f763213)
+
+        绝对定位和固定定位会压住标准流的所有内容
+
+        原因：浮动产生的最初的目的是因为想要实现文字环绕效果
+    - 元素的显示与隐藏
+
+        本质：让一个元素在页面中隐藏或显示出来
+
+        1. display属性
+
+            `display:none`隐藏对象
+
+            `display:block` 显示元素
+
+            隐藏后不再占有原来的位置。不是删除而隐藏
+        2. visibility属性
+
+            `visibility:visible;`
+
+            `visibility:hidden;`隐藏元素后继续占有原来的位置
+        3. overflow
+
+            对溢出的部分进行演示和隐藏
+
+            `overflow:visible;`默认是显示的
+
+            `overflow:hidden;`对溢出部分进行隐藏
+
+            `overflow:auto;`在需要的时候添加滚动条，超出加滚动条不超出不加滚动条
+
+            `overflow:scroll;`溢出部分加上滚动条，超不超出都显示滚动条
+
+    ### 2-14 css高级技巧
+
+    - css三角形做法
+
+```JavaScript
+div {
+width:0;
+height:0;
+border:10px solid transparent;
+boder-top-color:pink;
+margin:100px auto;
+}
+```
+
+    ### 2-15 精灵图
+
+    - 为什么需要精灵图
+
+        为了有效地减少服务器接收和发送的请求次数，提高页面的加载速度
+    - 精灵图使用
+
+        核心：
+
+        1. 精灵技术主要针对于背景图片的使用，就是把多个小背景图片整合到一张大图片中
+        2. 这个大图片也称为sprites精灵图或雪碧图
+        3. 移动背景图片的位置，这里可以使用background-position
+        4. 移动的距离就是这个目标图片的x和y坐标，注意网页中的坐标有所不同
+        5. 因为一般情况下都是往上往左走，所以数值都是负值
+        6. 使用精灵图的时候需要精确测量，每个小背景图片的大小和位置。
+
+    ### 2-16 flex布局
+
+    **父元素（容器）**
+
+      通过将 `display` 属性设置为 `flex`，flex 容器将可伸缩：
+
+```text
+.flex-container {
+  display: flex;
+}
+```
+
+    以下是 flex 容器属性：
+
+    - flex-direction 属性：属性定义容器要在哪个方向上堆叠 flex 项目。
+
+        `column` 值设置垂直堆叠 flex 项目（从上到下）
+
+        `column-reverse` 值垂直堆叠 flex 项目（但从下到上）
+
+        `row` 值水平堆叠 flex 项目（从左到右）
+
+        `row-reverse` 值水平堆叠 flex 项目（但从右到左）
+    - flex-wrap属性：规定是否应该对 flex 项目换行。
+
+        `wrap` 值规定 flex 项目将在必要时进行换行
+
+        `nowrap` 值规定将不对 flex 项目换行（默认）
+
+        `wrap-reverse` 值规定如有必要，弹性项目将以相反的顺序换行
+    - flex-flow属性：用于同时设置 flex-direction 和 flex-wrap 属性的简写属性
+    - justify-content 属性：属性用于对齐 flex 项目
+
+        `center` 值将 flex 项目在容器的中心对齐
+
+        效果：
+
+        ![](https://secure2.wostatic.cn/static/nEtAvdADsSQufPoFJh42pg/image.png?auth_key=1691120297-xbYgu6xZdPHAu7KVENhGzZ-0-df68bd19381619bb9e07136c762df5e2)
+
+        `flex-start` 值将 flex 项目在容器的开头对齐（默认）
+
+        `flex-end` 值将 flex 项目在容器的末端对齐
+
+        `space-around` 值显示行之前、之间和之后带有空格的 flex 项目
+
+        效果：
+
+        ![](https://secure2.wostatic.cn/static/gfSX3dbpMCgBvc26RkBaTB/image.png?auth_key=1691120297-aUsc8MRU54vshhnaB87bi1-0-8bfb4cab2133a0fdad0f6a25f606e8e9)
+
+        `space-between` 值显示行之间有空格的 flex 项目
+
+        效果：
+
+        ![](https://secure2.wostatic.cn/static/sSxP6dhCANFFwtQqGedXgw/image.png?auth_key=1691120297-pxQYDgeoW5fyKV4ZkuAxTj-0-88725cf38846672bd3f8e39aae8cc585)
+    -  align-items 属性：属性用于垂直对齐 flex 项目。
+
+        `center` 值将 flex 项目在容器中间对齐
+
+        ![](https://secure2.wostatic.cn/static/rWdQhQ4S3NwDhUtY2NWLae/image.png?auth_key=1691120297-odjnnR7zfyZXRowT4FByuR-0-0689e44a948d703825f39ef5d5197de7)
+
+        `flex-start` 值将 flex 项目在容器顶部对齐
+
+        `flex-end` 值将弹性项目在容器底部对齐
+
+        `stretch` 值拉伸 flex 项目以填充容器（默认）
+
+        效果：
+
+        ![](https://secure2.wostatic.cn/static/dqXaPWDDjU1sHv9PUMGpVw/image.png?auth_key=1691120297-icMEuCWPLMj2fvV5wvRrMT-0-9d1647c1003f455876540e771b4485eb)
+
+        `baseline` 值使 flex 项目基线对齐
+
+        ![](https://secure2.wostatic.cn/static/3ZXJW9cNwtS3hq91Y4X6m1/image.png?auth_key=1691120297-7gsJBirrYHc1PaKTqVxP5K-0-254229f72f17e3f8350416d4d2ff11c0)
+    -  align-content 属性：属性用于对齐弹性线
+
+        `space-between` 值显示的弹性线之间有相等的间距
+
+        `space-around` 值显示弹性线在其之前、之间和之后带有空格
+
+        `stretch` 值拉伸弹性线以占据剩余空间（默认）
+
+        `center` 值在容器中间显示弹性线
+
+        `flex-start` 值在容器开头显示弹性线
+
+        `flex-end` 值在容器的末尾显示弹性线
+
+    **子元素（项目）**
+
+    - order 属性：属性规定 flex 项目的顺序，值必须是数字，默认值是 0
+
+```HTML
+<div class="flex-container">
+  <div style="order: 3">1</div>
+  <div style="order: 2">2</div>
+  <div style="order: 4">3</div> 
+  <div style="order: 1">4</div>
+</div>
+```
+
+        效果：
+
+        ![](https://secure2.wostatic.cn/static/2r6ZLnazDVoKgRgsNZGMzy/image.png?auth_key=1691120297-2xHL8Xg2pFe7gdxMp5hmj9-0-74c06df4acf2ded532d97fb376269851)
+    - flex-grow属性：属性规定某个 flex 项目相对于其余 flex 项目将增长多少，该值必须是数字，默认值是 0。
+
+```HTML
+<div class="flex-container">
+  <div style="flex-grow: 1">1</div>
+  <div style="flex-grow: 1">2</div>
+  <div style="flex-grow: 8">3</div> 
+</div>
+```
+
+        效果：
+
+        ![](https://secure2.wostatic.cn/static/cgbA895MvkwxMz1TXA9ZJw/image.png?auth_key=1691120297-oCop6G8tEbM1tpMoQisWTk-0-9f832897634425a30355c4b58e4fce06)
+    - flex-shrink属性：属性规定某个 flex 项目相对于其余 flex 项目将收缩多少，该值必须是数字，默认值是 1。flex 元素仅在默认宽度之和大于容器的时候才会发生收缩，其收缩的大小是依据 flex-shrink 的值。
+
+        值为0时，不被压缩，值为1时，为默认压缩大小。值为2时，为默认大小压缩的一半。
+
+```HTML
+<div class="flex-container">
+  <div style="flex-shrink:2">1</div>
+  <div style="flex-shrink: 1">2</div>
+  <div style="flex-shrink: 0">3</div>
+  <div>4</div>
+  <div>5</div>
+  <div>6</div>
+  <div>7</div>
+  <div>8</div>
+  <div>9</div>
+  <div>10</div>
+</div>
+```
+
+        效果：
+
+        ![](https://secure2.wostatic.cn/static/4pBpNTXUf8v5hD9nP9xL6S/image.png?auth_key=1691120297-6iEt9sUavJDZnDNQpkeRhk-0-8f809bb7999a05acd21ed3aa4c8b156f)
+    - flex-basis属性：`flex-basis` 属性规定 flex 项目的初始长度。可以比此宽度放大，不可缩小。
+    - flex属性：`flex` 属性是 flex-grow、flex-shrink 和 flex-basis 属性的简写属性
+
+```CSS
+/* 关键字值 */
+flex: auto;
+flex: initial;
+flex: none;
+
+/* 一个值，无单位数字：flex-grow */
+flex: 2;
+
+/* 一个值，width/height: flex-basis */
+flex: 10em;
+flex: 30px;
+flex: min-content;
+
+/* 两个值：flex-grow | flex-basis */
+flex: 1 30px;
+
+/* 两个值：flex-grow | flex-shrink */
+flex: 2 2;
+
+/* 三个值：flex-grow | flex-shrink | flex-basis */
+flex: 2 2 10%;
+
+/*全局属性值 */
+flex: inherit;
+flex: initial;
+flex: unset;
+
+单值语法: 值必须为以下其中之一：
+
+一个无单位数 (<number>): 它会被当作 flex:<number> 1 0; <flex-shrink>的值被假定为 1，然后<flex-basis> 的值被假定为0。
+一个有效的 宽度 (width) 值：它会被当作 <flex-basis> 的值。
+关键字none，auto或initial.
+双值语法: 第一个值必须为一个无单位数，并且它会被当作 <flex-grow> 的值。第二个值必须为以下之一：
+
+一个无单位数：它会被当作 <flex-shrink> 的值。
+一个有效的宽度值：它会被当作 <flex-basis> 的值。
+三值语法：
+
+第一个值必须为一个无单位数，并且它会被当作 <flex-grow> 的值。
+第二个值必须为一个无单位数，并且它会被当作 <flex-shrink> 的值。
+第三个值必须为一个有效的宽度值，并且它会被当作 <flex-basis> 的值。
+```
+    - align-self属性：属性规定弹性容器内所选项目的对齐方式，属性将覆盖容器的 align-items 属性所设置的默认对齐方式。
+
+    #### 完美的居中
+
+    将 `justify-content` 和 `align-items` 属性设置为居中，然后 flex 项目将完美居中：
+
+    ![](https://secure2.wostatic.cn/static/gS2ZmzED3TogBnLLAQdxMX/image.png?auth_key=1691120297-9HGgJSxFkRzCGCyWdr4Pmv-0-e9fc996dd5280e7423f9473ede411671)
+
+    ### 2-17 grid布局
+
+    CSS 网格布局模块（CSS Grid Layout Module）提供了带有行和列的基于网格的布局系统，它使网页设计变得更加容易，而无需使用浮动和定位。
+
+    #### 网格元素
+
+    网格布局由一个父元素以及一个或多个子元素组成。
+
+    网格布局必须有一个 display 属性设置为 grid 或 inline-grid 的父元素。当 HTML 元素的 `display` 属性设置为 `grid` 或 `inline-grid` 时，它就会成为网格容器。
+网格容器的直接子元素自动成为网格项目。
+
+```HTML
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  background-color: #2196F3;
+  padding: 10px;
+}
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+</style>
+<body>
+<div class="grid-container">
+  <div class="grid-item">1</div>
+  <div class="grid-item">2</div>
+  <div class="grid-item">3</div>  
+  <div class="grid-item">4</div>
+  <div class="grid-item">5</div>
+  <div class="grid-item">6</div>  
+  <div class="grid-item">7</div>
+  <div class="grid-item">8</div>
+  <div class="grid-item">9</div>  
+</div>
+</body>
+
+```
+
+    效果：
+
+    ![](https://secure2.wostatic.cn/static/pihSf8Sf5MBgfkXzfYDHCC/image.png?auth_key=1691120297-uNTPHg6Z3BBAxH8YUgRaPC-0-6ef1620d8585a7abe18b14897b2e66e1)
+
+    #### 网格列（Grid Columns）
+
+    网格项的垂直线被称为列
+
+    ![](https://secure2.wostatic.cn/static/rGTqp8B2vumfs8DTJNVyc6/image.png?auth_key=1691120297-3a1nhdYW2cqBzsi1cHoTh3-0-9eea386a53de743d09b11eacedf25c87)
+
+    #### 网隔行（Grid Rows）
+
+    网格项的水平线被称为行。
+
+    ![](https://secure2.wostatic.cn/static/wbaXKmRVG9jy4EzJehMsge/image.png?auth_key=1691120297-eWgzWLE4RhbyeHyLGYNoiZ-0-fa336f4e9ea3ba4b06f83a9dc357417b)
+
+    #### 网格间隙（Grid Gaps）
+
+    每列/行之间的间隔称为间隙。
+
+    ![](https://secure2.wostatic.cn/static/e1pjncTmiuiKEjMrmJQf7U/image.png?auth_key=1691120297-QdjveKmRDwHgZ3az4vwKn-0-c2aa3552fc99d81bebff925d7eea8ff2)
+
+<style>
+
+.grid-container {
+
+  display: grid;
+
+  grid-template-columns: auto auto auto;
+
+  background-color: #2196F3;
+
+  padding: 10px;
+
+}
+
+.grid-item {
+
+  background-color: rgba(255, 255, 255, 0.8);
+
+  border: 1px solid rgba(0, 0, 0, 0.8);
+
+  padding: 20px;
+
+  font-size: 30px;
+
+  text-align: center;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>网格元素</h1>
+
+<p>网格布局必须有一个 <em>display</em> 属性设置为 <em>grid</em> 或 <em>inline-grid</em> 的父元素。</p>
+
+<p>网格容器的直接子元素自动成为网格项目。</p>
+
+<div class="grid-container">
+
+  <div class="grid-item">1</div>
+
+  <div class="grid-item">2</div>
+
+  <div class="grid-item">3</div>  
+
+  <div class="grid-item">4</div>
+
+  <div class="grid-item">5</div>
+
+  <div class="grid-item">6</div>  
+
+  <div class="grid-item">7</div>
+
+  <div class="grid-item">8</div>
+
+  <div class="grid-item">9</div>  
+
+</div>
+
+`grid-column-gap` 属性设置列之间的间隙
+
+```CSS
+.grid-container {
+  display: grid;
+  grid-column-gap: 50px;
+}
+```
+
+`grid-row-gap` 属性设置行之间的间隙：
+
+```CSS
+.grid-container {
+  display: grid;
+  grid-row-gap: 50px;
+}
+```
+
+`grid-gap` 属性是 grid-row-gap 和 grid-column-gap 属性的简写属性,属性还可用于将行间隙和列间隙设置为一个值：
+
+```CSS
+.grid-container {
+  display: grid;
+  grid-gap: 50px 100px;
+}
+```
+
+#### 网格行（Grid Lines）
+
+- 列之间的线称为列线（column lines）。
+- 行之间的线称为行线（row lines）。
+
+![](https://secure2.wostatic.cn/static/kxFiVgrhJrAhPm2U5wnmkT/image.png?auth_key=1691120297-iBGj9BbxhgtyixHFgJy8Lo-0-b5c717ad09e3962824a5ab2ba47ae9df)
+
+当把网格项目放在网格容器中时，请引用行号：
+
+**实例**:
+
+把网格项目放在列线 1，并在列线 3 结束它：
+
+```CSS
+.item1 {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+```
+
+把网格项目放在行线 1，并在行线 3 结束它：
+
+```CSS
+.item1 {
+  grid-row-start: 1;
+  grid-row-end: 3;
+
+```
+
+#### 网格容器
+
+如需使 HTML 元素充当网格容器，您必须把 `display` 属性设置为 grid 或 inline-grid。
+
+网格容器由放置在列和行内的网格项目组成。
+
+- grid-template-columns 属性：属性定义网格布局中的列数，并可定义每列的宽度。
+
+    该值是以空格分隔的列表，其中每个值定义相应列的长度。
+
+    如果您希望网格布局包含 4 列，请指定这 4 列的宽度；如果所有列都应当有相同的宽度，则设置为 "auto"。
+
+```CSS
+//生成包含四列的网格：
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+```
+
+    **注意**：如果在 4 列网格中有 4 个以上的项目，则网格会自动添加新行并将这些项目放入其中。
+
+    `grid-template-columns` 属性还可以用于指定列的尺寸（宽度）。
+- grid-template-rows 属性：属性定义每列的高度。它的值是以空格分隔的列表，其中每个值定义相应行的高度：
+
+```CSS
+.grid-container {
+  display: grid;
+  grid-template-rows: 80px 200px;
+}
+```
+- justify-content 属性: 属性用于在容器内对齐整个网格
+
+    `space-evenly` 会在列之间以及列周围留出相等的空间
+
+    效果：
+
+    ![](https://secure2.wostatic.cn/static/frSz3CH31yHKLSppYQDLcq/image.png?auth_key=1691120297-qhQeHDAGjPjosyVW2E1kqe-0-21e89ea72bd254e03c946683043fc5f5)
+
+    `space-around`会在列周围留出相等的空间
+
+    效果：
+
+    ![](https://secure2.wostatic.cn/static/949n8RzaLkdsedvm6JS783/image.png?auth_key=1691120297-hmLEptBmN8VYTHFso31cRo-0-2b5d8fe6f4131ebf52dba1453abb2b43)
+
+    `space-between `会在列之间留出相等的空间
+
+    效果:
+
+    ![](https://secure2.wostatic.cn/static/nG3KeZgLmdfPS5dGcVQRrm/image.png?auth_key=1691120334-2UgzX8kEeooxLwaWqEUaQ1-0-9636f1bd9bd9fbe38a5755d36d185d11)
+
+    `center` 会在容器中间对齐网格
+
+    效果：
+
+    ![](https://secure2.wostatic.cn/static/pprhxVnb3fmSSmZoUhtDtc/image.png?auth_key=1691120334-4oVgGdkFagHWR5zKjB45w-0-809d317b67c2e8b1fdf81f2ccd9b97a4)
+
+    `start `会在容器开头对齐网格
+
+    效果：
+
+    ![](https://secure2.wostatic.cn/static/92i1gSXCt7hRo17VL7TEoJ/image.png?auth_key=1691120334-5hBP18smqJ9SVd5N3FX2RU-0-51069c24b6f533509feff94dcda3ab49)
+
+    `end` 会在容器末端对齐网格
+
+    ![](https://secure2.wostatic.cn/static/cdRMG9KedYzXxZ6uFy33Xe/image.png?auth_key=1691120334-jXg2QNi9QdbmTsoeYvDaQh-0-f04ce7aebad2efa845b4ed35e7cd7626)
+- align-content 属性：属性用于垂直对齐容器内的整个网格
+
+    注意：网格的总高度必须小于容器的高度，这样 align-content 属性才能生效。
+
+    `center` 会对齐容器中间的行
+
+    ![](https://secure2.wostatic.cn/static/sRZSSkiNWDvBySR9yG5n8z/image.png?auth_key=1691120334-27S8aCLiLc9KGZnf7YgcQX-0-387ff3933bb04b06ee2327d2cd17b5d5)
+
+    `space-evenly` 将使行之间以及行周围具有相等的空间
+
+    ![](https://secure2.wostatic.cn/static/9tJxUbKmFu3xZmwXXkiCFm/image.png?auth_key=1691120335-kKCC76eevNdgFQANpgRm5e-0-0f79ac5377f38763090feb104e31be06)
+
+    `space-around` 将使行周围具有相等的空间
+
+    ![](https://secure2.wostatic.cn/static/9hjGjGA6ykzHjEEs2AMDiX/image.png?auth_key=1691120335-8J4vaaobLCfVAJWn37CLHa-0-5112b9e269bde8b5e04b14c5129635ad)
+
+    `space-between` 将使行之间具有相等的空间：
+
+    ![](https://secure2.wostatic.cn/static/vPXCG7rMpE4Jmzk8JaaXry/image.png?auth_key=1691120335-gHeLUpKC7aeXcUL59QRG5P-0-e7f9122005e0c53b467e00f3f9eb4d46)
+
+    `start`会对齐容器开头的行
+
+    `end` 会对齐容器末端的行
+
+#### 子元素（项目）
+
+网格容器包含网格项目。
+
+默认情况下，容器在每一行的每一列都有一个网格项目，但是您可以设置网格项目的样式，让它们跨越多个列和/或行。
+
+- `grid-row` 属性是 grid-row-start 和 grid-row-end 属性的简写属性。如需放置项目，您可以引用行号，或使用关键字 "span" 定义该项目将跨越多少行：
+
+```CSS
+/* 使 "item1" 在 row-line 1 开始，在 row-line 4 结束：*/
+.item1 {
+  grid-row: 1 / 4;
+}
+/* 使 "item1" 从第 1 行开始并跨越 2 行：*/
+.item1 {
+  grid-row: 1 / span 2;
+}
+
+```
+- `grid-column` 属性是 grid-column-start 和 grid-column-end 属性的简写属性。如需放置项目，您可以引用行号，或使用关键字 "span" 定义该项目将跨越多少列：
+
+```CSS
+/* 使 "item1" 在 column-line 1 开始，在column-line 4 结束：*/
+.item1 {
+  grid-column: 1 / 4;
+}
+/* 使 "item1" 从第 1 列开始并跨越 2 列：*/
+.item1 {
+  grid-column: 1 / span 2;
+}
+
+```
+- `grid-area` 属性可以用作 grid-row-start、grid-column-start、grid-row-end 和 grid-column-end 属性的简写属性。
+
+```CSS
+/*使 "item8" 从 row-line 1 和 column-line 2 开始，在 row-line 5 和 column line 6 结束：*/
+.item8 {
+  grid-area: 1 / 2 / 5 / 6;
+}
+/*使 "item8" 从 row-line 2 和 column-line 开始，并跨越 2 行和 3 列*/
+.item8 {
+  grid-area: 2 / 1 / span 2 / span 3;
+}
+
+```
+
+    `grid-area` 属性也可以用于为网格项目分配名称。可以通过网格容器的 `grid-template-areas` 属性来引用命名的网格项目。
+
+    item1 的名称是 "myArea"，并跨越五列网格布局中的所有五列：
+
+    每行由撇号（' '）定义。
+
+    每行中的列都在撇号内定义，并以空格分隔。
+
+```CSS
+.item1 {
+  grid-area: myArea;
+}
+.grid-container {
+  grid-template-areas: 'myArea myArea myArea myArea myArea';
+}
+```
+
+    效果：
+
+    ![](https://secure2.wostatic.cn/static/48awV8jDjXhro965P7sB1p/image.png?auth_key=1691120336-36fUx1DiTbRKyXEQnTJaUd-0-afe2c6f9f13af6579b3509289824a69c)
+
+    让 "myArea" 跨越五列网格布局中的两列（句号代表没有名称的项目）：
+
+```CSS
+.item1 {
+  grid-area: myArea;
+}
+.grid-container {
+  grid-template-areas: 'myArea myArea . . .';
+} 
+```
+
+    如需定义两行，请在另一组撇号内定义第二行的列：
+
+    使 "item1" 跨越两列和两行：
+
+```CSS
+.grid-container {
+  grid-template-areas: 'myArea myArea . . .' 'myArea myArea . . .';
+} 
+```
+
+    #### 项目的顺序
+
+    网格布局允许我们将项目放置在我们喜欢的任意位置。
+
+    HTML 代码中的第一项不必显示为网格中的第一项。
+
+```CSS
+.item1 { grid-area: 1 / 3 / 2 / 4; }
+.item2 { grid-area: 2 / 3 / 3 / 4; }
+.item3 { grid-area: 1 / 1 / 2 / 2; }
+.item4 { grid-area: 1 / 2 / 2 / 3; }
+.item5 { grid-area: 2 / 1 / 3 / 2; }
+.item6 { grid-area: 2 / 2 / 3 / 3; }
+```
+
+    效果：
+
+    ![](https://secure2.wostatic.cn/static/7HF4Via6RJKYSNP5jkrF3B/image.png?auth_key=1691120336-umEmsfvAhCoZVZLsjgKyHj-0-80a2c946b294357904d4ae5fdddf9a83)
+
+### 2-18 长度单位
+
+#### 绝对长度
+
+绝对长度单位是固定的，用任何一个绝对长度表示的长度都将恰好显示为这个尺寸。
+
+不建议在屏幕上使用绝对长度单位，因为屏幕尺寸变化很大。但是，如果已知输出介质，则可以使用它们，例如用于打印布局（print layout）。
+
+![](https://secure2.wostatic.cn/static/xzZkMReYZJgVwmdN79ePiD/image.png?auth_key=1691120336-kE6M42okCugdKiSpVko8c4-0-a38e8dc7b6a45434d4f48e214b643212)
+
+- 像素（px）是相对于观看设备的。对于低 dpi 的设备，1px 是显示器的一个设备像素（点）。对于打印机和高分辨率屏幕，1px 表示多个设备像素。
+
+#### 相对长度
+
+相对长度单位规定相对于另一个长度属性的长度。相对长度单位在不同渲染介质之间缩放表现得更好。
+
+![](https://secure2.wostatic.cn/static/bm9XLYRXd55aJhiVMnJMff/image.png?auth_key=1691120336-r8LkM8cjPcgQndvFwBfURT-0-29cb65093568fd41131ed9f0ff179972)
+
+提示：em 和 rem 单元可用于创建完美的可扩展布局！
+
+- 视口（Viewport）= 浏览器窗口的尺寸。如果视口宽 50 里面，则 1vw = 0.5cm。

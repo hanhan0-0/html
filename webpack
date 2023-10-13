@@ -1,0 +1,190 @@
+## 第五章 webpack
+
+### 1.什么是webpack
+
+定义：本质上，webpack是一个用于现代JavaScript应用程序的静态模块打包工具，当webpack处理应用程序时，它会在内部从一个或多个入口点构建一个依赖图，然后将你项目中所需的每一个模块组合成一个或多个bundles，它们均为静态资源，用于展现你的内容。
+
+静态模块：指的是编写代码过程中的,html，css，js，图片等固定内容的文件。
+
+  打包：把静态模块内容，压缩，整合，转译等(前端工程化)
+    - 把less/sass转成css代码
+    - 把ES6+降级成ES5
+    - 支持多种模块标准语法
+
+#### 使用Webpack
+
+步骤：
+  1. 新建并初始化项目，编写业务源代码
+  2. 下载webpack webpack-cli到当前项目中（版本独立），并配置局部自定义命令
+
+      ![](https://secure2.wostatic.cn/static/frBNWqMz58iZRegxSwUscH/image.png?auth_key=1697176646-vshDPyRvRhnGYLkZf3eDuh-0-daf404769dbf3ad1241b797892159ceb)
+
+      ![](https://secure2.wostatic.cn/static/sL1D6SYHYSAbacYjfE6SNA/image.png?auth_key=1697176646-ssx8g9JeynkrPV3YQdoACs-0-677daa4e04bde5d26605b7eb74e778f4)
+  3. 运行打包命令，自动产生dist分发文件夹（压缩和优化后，用于最终运行的代码）
+
+      ![](https://secure2.wostatic.cn/static/3JFAJcVsJZ4a8vTHBNtU8Z/image.png?auth_key=1697176646-5hU5bAXiddMcvcHZ8uNSLb-0-3197bbca4fc449589d2de967a5af9f84)
+
+### 2.修改Webpack打包入口和出口
+
+webpack配置：影响webpack打包过程和结果
+
+步骤：
+  1. 项目根目录，新建webpack.config.js配置文件
+  2. 导出配置对象，配置入口，出口文件的路径
+
+      ![](https://secure2.wostatic.cn/static/gYEPPAZSN3mEEFP94WYHtQ/image.png?auth_key=1697176646-2EyudCLviPvX7oXp7twDd3-0-86f3c5576023e7e8e868ee3fa234cdd6)
+  3. 重新打包观察
+
+### 3.自动生成html文件
+
+插件html-webpack-plugin:在webpack打包时生成html文件
+
+plugin配置项是插入插件的功能
+
+### 4.打包css代码
+
+注意：webpack默认只识别js代码
+
+加载器css-loader：解析css代码
+
+加载器：style-loader：把解析后的css代码插入到DOM
+
+步骤：
+  1. 准备css文件代码引入到src/login/index.js中（压缩转译处理等）
+  2. 下载两个软件包
+  3. 配置
+  4. 打包观察
+
+### 5优化-提取css代码
+
+好处：css文件可以被浏览器缓存，减少js文件体积
+### 1、模块化的相关规范
+
+  #### 1.1模块化概述
+
+  - 传统开发模式的主要问题
+
+    1）命名冲突：重名变量会有覆盖问题 
+
+    2）文件依赖：js文件之间无法实现相互引用
+
+  - 模块化
+    - 模块化就是把单独的一个功能封装到一个模块中，模块之间相互隔离，但是可以通过特定的接口公开内部成员，亦可以依赖别的模块
+    - 模块化开发的好处：方便代码重用，从而提升开发效率，并且方便后期的维护
+
+  #### 1.2浏览器端模块化规范
+
+  1）AMD 代表：require.js
+
+  2） CMD 代表：sea.js
+
+  #### 1.3服务器端模块化规范
+
+  - 1）CommonJS
+
+    （1）模块分为单文件模块和包
+
+    （2）模块成员导出：module.exports 和exports
+
+    （3）模块成员导入：require('模块标识符')
+
+  #### 1.4大一统的模块化规范-ES6模块化
+
+  在 Es6模块化规范诞生之前，Javascript 社区已经尝试并提出了AMD、CMD、CommonJs等模块化规范。
+
+  - 但是，这些社区提出的模块化标准，还是存在一定的差异性与局限性、并不是浏览器与服务器通用的模块化标准，例如:
+    - AMD和cMD适用于浏览器端的Javascript模块化
+    - CommonJs适用于服务器端的Javascript模块化
+
+  因此，ES6语法规范中，在语言层面上定义了ES6模块化规范，是浏览器端与服务器端通用的模块化开发规范。
+
+  - ES6模块化规范中定义:
+    - 每个js文件都是—个独立的模块
+    - 导入模块成员使用import关键字
+    - 暴露模块成员使用export关键字
+
+  **1）node.js中通过babel体验es6模块化 **
+
+    （1）npm install --save-dev @babel/core @babel/cli @babel/preset-env @babel/node
+
+    （2）npm install --save @babel/polyfill
+
+    （3）项目跟目录创建文件babel.config.js
+
+    （4）babel.config.js 文件内容如下侧代码
+
+    （5）通过npx babel-node index.js 执行代码
+
+      ![](https://secure2.wostatic.cn/static/6sCKZmLF6t7oWyqTfotB1e/image.png?auth_key=1697176633-g8Sn9DRNjkTLu8SYX6Ycbs-0-feb1362badd7a5fa7468000840367a17)
+
+      presets是语法转换的数组，提供了期间可能会用到的语法转换插件如@babel/env；
+
+      target:转换完毕的代码起码要支持里面的浏览器
+
+    #### 1.5 ES6模块化的基本语法
+
+      **1）默认导出与默认导入**
+
+      - 默认导出语法export default 默认导出的成员
+      - 默认导入语法import接收名称from'模块标识符'
+
+          ![](https://secure2.wostatic.cn/static/mgiig8X9p16dPqBnVtxg17/image.png?auth_key=1697176633-ktskqEUAatcm9faozc3d5n-0-2f3ed402d44f4a928454b33347f2a0d9)
+
+          ![](https://secure2.wostatic.cn/static/2EgQzPPNQ6dD4nbUx6Fy37/image.png?auth_key=1697176633-55MK7dzupAiERKwMcm4YdV-0-c4ed5b59835f2d1bd4e3776f49576019)
+
+      在模块中只允许一次向外导出，暴露模块，不允许多次；如果导出时没暴露任何成员，引用时不会报错但是会是一个空对象。
+
+      **2）按需导出与按需导入**
+
+      - 按需导出语法export let s1=10
+      - 按需导入语法 import {s1} from '模块标识符'  ，其中按需导入的名称必须和导出的名称是一一对应关系 
+
+          ![](https://secure2.wostatic.cn/static/dmpDWSk2792koYM7PvXoti/image.png?auth_key=1697176633-d6X5ijh3xuQpaji6hn8Kdt-0-6ca9595acfc851024b5163438b239434)
+
+          ![](https://secure2.wostatic.cn/static/u7yAJgBWXKKP8hw17DGuL5/image.png?auth_key=1697176633-e5JG9SnPFmBriT3HPxZWLF-0-8d5ca1f29760c254a6d79410c8cb46dd)
+
+      注意：
+
+      （1）按需导出和默认导出同时存在是不会报错的，但是默认引用文件时，是不会包含按需导出的，默认导入和按需导入成员同时存在时可以得到按需导出的成员。
+
+      （2）import { s1 as**} from '模块标识符' as后可以起别名
+
+      （3）每个模块中可以多次按需导出
+
+      **3）直接导入并执行模块代码** 
+
+        有时候，我们只想单纯执行某个模块中的代码，并不需要得到模块中向外暴露的成员，此时，可以直接导入并执行模块代码。
+
+        ![](https://secure2.wostatic.cn/static/ghweCJSjDMxd7cDkR6rnEH/image.png?auth_key=1697176633-5iH4eUGVGYY78ipnYX8PF9-0-17d00f4a31973cc64b22aeb1fa2007dd)
+
+        ![](https://secure2.wostatic.cn/static/mgrddzN7NdEfC1eRUAcNGS/image.png?auth_key=1697176633-qLX7GKiu9QjKQb52v57tN5-0-f7efbb2bdf761ba5e0338e7201e1d220)
+
+### 2、webpack
+
+  #### 2.1当前web开发面临的困境
+
+  - 文件依赖关系错综复杂
+  - 静态资源请求效率低
+  - 模块化支持不友好
+  - 浏览器对高级Javascript特性兼容程度较低
+  - etc...
+
+  #### 2.2 webpack概述
+
+   webpack是一个流行的前端项目构建工具(打包工具)，可以解决当前web开发中所面临的困境。
+
+  webpack提供了友好的模块化支持，以及代码压缩混淆、处理js 兼容问题、性能优化等强大的功能，从而让程序员把工作的重心放到具体的功能实现上，提高了开发效率和项目的可维护性。
+
+  ![](https://secure2.wostatic.cn/static/cQ3hn3ZzyG8wBLip9RpEXL/image.png?auth_key=1697176633-niQmdZaPLYaD1ZXsFngbq5-0-6531b231bdc78b7f270ee305f01d427c)
+
+  #### 2.3 webpack的基本使用
+
+  **1）创建列表隔行变色项目**
+
+  - 新建项目空白目录，并运行npm init -y命令，初始化包管理配置文件package.json
+  - 新建src 源代码目录
+  - 新建src -> index.html首页
+  - 初始化首页基本的结构
+  - 运行npm install jquery -S命令，安装jQuery
+  - 通过模块化的形式,实现列表隔行变色效果
+
